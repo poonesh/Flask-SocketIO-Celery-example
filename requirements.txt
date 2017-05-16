@@ -1,0 +1,4 @@
+Flask==0.10.1
+Flask_SocketIO
+celery==4.0.2
+amqp
