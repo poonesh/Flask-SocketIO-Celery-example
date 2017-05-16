@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Flask-SocketIO-Celery</title>
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    
+    $(document).ready(function(){
+    	namespace = '/test';
+        // stablish a connection to the server for the client  
+    	var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+        // upon the connetion, the client emits an event to the server called 'connection'  
+        socket.on('connect', function(){
+            socket.emit('connection', {connection_confirmation: 'you are connected to the socket!'});
+        
+        });
+        
+        // 'confirmation' event received by the client invokes the callback function which confirms the socket connection 
+        socket.on('confirmation', function(message){
+            var confir_str = message.connection_confirmation + '<br/>';
+            $('#receive_div').append(confir_str);
+        });
+
+        // 'response' event invokes the client callback function to greet the client with a message 
+        // after running background tasks through celery   
+    	socket.on('response', function(message){
+            if (message.count <= 4){
+    		  var response_str = message.count + '...' + '<br/>';
+    		  $('#receive_div').append(response_str);
+            } else {
+                var response_str = 'Hello '+ message.name + '!' + '<br/>';   
+                $('#receive_div').append(response_str);
+            }
+
+    	});
+
+        // 'submit_form' event is emitted to the server upon the form submission
+    	$('form#emit').submit(function(event) {
+            socket.emit('submit_name', {name: $('#emit_name').val()});
+            return false;
+       
+    	});
+
+    });
+    </script>
+
+</head>
+<body>
+	<h1>Flask-SocketIO-Celery simple example</h1>
+	<br>
+	<h3>Enter your name:</h3>
+	<form id="emit" method="POST" action="#">
+		<input type="text" id="emit_name" name="emit_name" placeholder="your name">
+		<input type="submit" value="send">
+	</form>
+	<br>
+	<h2>Receive:</h2>
+	<div id="receive_div"></div>
+</body>
+</html>
+
+
+
