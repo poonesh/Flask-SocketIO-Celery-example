@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'there is no secret'
 # CELERY_RESULT_BACKEND is required to keep track of task and store the status
 app.config.update(
 CELERY_BROKER_URL = 'amqp://localhost//',  
-CELERY_RESULT_BACKEND='amqp://localhost//' 
+CELERY_RESULT_BACKEND='rpc://'
 )
 
 # integrates Flask-SocketIO with the Flask application
