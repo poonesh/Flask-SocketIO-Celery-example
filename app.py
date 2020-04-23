@@ -1,7 +1,5 @@
-
-from flask import Flask, render_template, request, session
-from flask_socketio import SocketIO, emit, join_room, rooms
-from celery import Celery 
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO, emit, join_room
 from flask_celery import make_celery
 import time
 
