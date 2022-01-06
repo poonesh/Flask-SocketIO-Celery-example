@@ -1,4 +1,4 @@
 Flask==1.1.2
 Flask_SocketIO
-celery==4.4.2
+celery==5.2.2
 amqp
